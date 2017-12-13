@@ -5,10 +5,12 @@ namespace App\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 /**
  * @ORM\Entity
  * @ORM\Table(name="tp_user")
+ * @UniqueEntity("email")
  */
 class User implements UserInterface, \Serializable
 {
@@ -22,11 +24,10 @@ class User implements UserInterface, \Serializable
     /**
      * @ORM\Column(type="string", unique=true)
      * @Assert\NotBlank()
+     * @Assert\Email()
      * @Assert\Length(
      *      min = 2,
-     *      max = 50,
-     *      minMessage = "Your mail must be at least {{ limit }} characters long",
-     *      maxMessage = "Your mail cannot be longer than {{ limit }} characters"
+     *      max = 50
      * )
      */
     private $email;
@@ -34,6 +35,8 @@ class User implements UserInterface, \Serializable
 
     /**
      * @ORM\Column(type="string")
+     * @Assert\NotBlank()
+     * @Assert\Length(min=5,max=50)
      */
     private $password;
 

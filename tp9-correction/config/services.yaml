@@ -37,9 +37,16 @@ services:
 
     App\Entity\LogAction:
         public: true
+
     App\Event\UserCardEvent:
         public: true
 
     App\EventListener\UserCardSubscriber:
         arguments:
             $nbMaxUserCard: '%nb_max_usercard%'
+
+    App\Event\UserEvent:
+        public: true
+
+    App\EventListener\UserCardSubscriber:
+        public: true

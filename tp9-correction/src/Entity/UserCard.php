@@ -16,6 +16,7 @@ class UserCard
      * @ORM\Id
      * @ORM\Column(type="integer")
      * @ORM\GeneratedValue(strategy="AUTO")
+     *
      */
     private $id;
 
@@ -26,11 +27,13 @@ class UserCard
     private $attack = 2;
     /**
      * @ORM\Column(type="integer")
+     * @Assert\NotBlank()
      */
     private $defense = 2;
 
     /**
      * @ORM\Column(type="integer", name="action_point")
+     * @Assert\NotBlank()
      */
     private $actionPoint = 2;
 

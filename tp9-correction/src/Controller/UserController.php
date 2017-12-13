@@ -3,7 +3,9 @@
 namespace App\Controller;
 
 use App\AppAccess;
+use App\AppEvent;
 use App\Entity\User;
+use App\Event\UserEvent;
 use App\Form\UserType;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
@@ -48,15 +50,18 @@ class UserController extends Controller
         $form = $this->createForm(UserType::class, $person);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
-            $em = $this->getDoctrine()->getManager();
             $user=$form->getData();
-
             $user->setPassword($encoder->encodePassword($user,$user->getPassword()));
-             $em->persist($person);
-             $em->flush();
+            $event = $this->get(UserEvent::class);
+            $event->setUser($person);
+            $dispatcher = $this->get("event_dispatcher");
+            $dispatcher->dispatch(AppEvent::USER_ADD, $event);
+            $this->redirectToRoute("app_user_index");
     }
         return $this->render("User/add.html.twig", array("form" => $form->createView()));
+
     }
+
 
     /**
      * @Route(
